@@ -29,4 +29,9 @@ NOTES
 -------------------------------------------
 
 1. Only basic validation has been implemented as there was no specification to thoroughly check user input
-2. A
+2. Assumes that first line will always be the the board size, 2nd line the initialisation of the ships and any following
+    lines are operations.
+3. Will read inputs from inputs.txt located in src\main\resources\input.txt and outputs to outputs.txt in that same folder
+4. Use of HashMaps to store the ships for optimisation.
+5. Given more time, I would have separated the operations into their own classes with a generic Operation interface
+    that could be implemented, allowing multiple operations to be added later on.
