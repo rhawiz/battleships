@@ -1,6 +1,6 @@
 package net.thoughtmachine.game;
 
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
+import net.thoughtmachine.exception.InvalidShipPlacementException;
 import net.thoughtmachine.io.FileReader;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class GameTest {
     @Test
-    public void TestGame1() throws InvalidBattleshipPlacementException {
+    public void TestGame1() throws InvalidShipPlacementException {
 
         String inputFile = "/tests/input_1_test.txt";
         String expectedOutputFile = "/tests/input_1_expected.txt";
@@ -30,7 +30,7 @@ public class GameTest {
     }
 
     @Test
-    public void TestGame2() throws InvalidBattleshipPlacementException {
+    public void TestGame2() throws InvalidShipPlacementException {
 
         String inputFile = "/tests/input_2_test.txt";
         String expectedOutputFile = "/tests/input_2_expected.txt";

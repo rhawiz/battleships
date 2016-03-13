@@ -1,18 +1,16 @@
-package net.thoughtmachine.battleship;
+package net.thoughtmachine.ship;
 
 
 import net.thoughtmachine.datatype.Coordinate;
 import net.thoughtmachine.util.Consts.Rotation;
 import net.thoughtmachine.util.Consts.Orientation;
 
-import static net.thoughtmachine.util.Consts.Rotation.LEFT;
-
 /**
  * Battleship class to store its current state. i.e. (x, y) coordinates, orientation and whether it's been sunk or not.
  *
  * @author rhawiz
  */
-public class Battleship {
+public class Battleship implements IShip {
     private Orientation orientation;
     private Coordinate coordinates;
     private boolean sunk;
@@ -23,23 +21,19 @@ public class Battleship {
         this.sunk = false;
     }
 
-    public void setX(int x) {
+    private void setX(int x) {
         coordinates.setX(x);
     }
 
-    public void setY(int y) {
+    private void setY(int y) {
         coordinates.setY(y);
     }
 
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
-    }
-
-    public int getX() {
+    private int getX() {
         return coordinates.getX();
     }
 
-    public int getY() {
+    private int getY() {
         return coordinates.getY();
     }
 
@@ -61,7 +55,7 @@ public class Battleship {
 
 
     /**
-     * Move the coordinates of the battleship one place in the direction of where its facing
+     * Move the coordinates of the ship one place in the direction of where its facing
      */
     public void move() {
         switch (orientation) {
@@ -124,8 +118,8 @@ public class Battleship {
 
     public String toString() {
         String str = "(" + getX() + ", " + getY() + ", " + orientation.toChar() + ")";
-        if(isSunk()){
-            str+= " SUNK";
+        if (isSunk()) {
+            str += " SUNK";
         }
         return str.trim();
 

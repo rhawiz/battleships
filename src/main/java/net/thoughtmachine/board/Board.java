@@ -1,11 +1,10 @@
 package net.thoughtmachine.board;
 
-import net.thoughtmachine.battleship.Battleship;
+import net.thoughtmachine.ship.*;
 import net.thoughtmachine.datatype.Coordinate;
-import net.thoughtmachine.exception.BattleshipExistsInCoordsException;
-import net.thoughtmachine.exception.BattleshipOutOfBoundsExeception;
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
-import net.thoughtmachine.io.Parser;
+import net.thoughtmachine.exception.ShipExistsInCoordsException;
+import net.thoughtmachine.exception.ShipOutOfBoundsExeception;
+import net.thoughtmachine.exception.InvalidShipPlacementException;
 import net.thoughtmachine.util.Consts.Rotation;
 
 import java.util.ArrayList;
@@ -13,16 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Class to store information regarding a board. i.e. its dimension and position of the battleships and any sunken
- * battleships
+ * Class to store information regarding a board. i.e. its dimension and position of the shipList and any sunken
+ * shipList
  *
  * @author rhawiz
  */
 public class Board {
 
     private int dimension;
-    private HashMap<Coordinate, Battleship> board;
-    private ArrayList<Battleship> battleships;
+    private HashMap<Coordinate, IShip> board;
+    private ArrayList<IShip> shipList;
 
     /**
      * Constructor
@@ -31,112 +30,112 @@ public class Board {
      */
     public Board(int dimension) {
         this.dimension = dimension;
-        this.board = new HashMap<Coordinate, Battleship>();
-        this.battleships = new ArrayList<Battleship>();
+        this.board = new HashMap<Coordinate, IShip>();
+        this.shipList = new ArrayList<>();
     }
 
 
     /**
-     * Populate the board with an arraylist of battleships.
+     * Populate the board with an arraylist of shipList.
      *
-     * @param battleshipArrayList
-     * @throws InvalidBattleshipPlacementException
+     * @param shipList
+     * @throws InvalidShipPlacementException
      */
-    public void populate(List<Battleship> battleshipArrayList) throws InvalidBattleshipPlacementException {
+    public void populate(List<IShip> shipList) throws InvalidShipPlacementException {
 
-        for (Battleship battleship : battleshipArrayList) {
+        for (IShip ship : shipList) {
 
-            addBattleship(battleship);
+            addShip(ship);
 
         }
 
     }
 
     /**
-     * Get the Battleship at a provided Coordinate
+     * Get the ship at a provided Coordinate
      *
-     * @param coords x, y position of the battleship
-     * @return Battleship at the coordinate provided or null if empty.
+     * @param coords x, y position of the ship
+     * @return ship at the coordinate provided or null if empty.
      */
-    public Battleship getBattleship(Coordinate coords) {
+    public IShip getShip(Coordinate coords) {
         return board.get(coords);
     }
 
     /**
-     * Removes a battleship provided a Coordinate
+     * Removes a ship provided a Coordinate
      *
-     * @param coords x, y position of the battleship
+     * @param coords x, y position of the ship
      */
-    public void removeBattleship(Coordinate coords) {
+    public void removeShip(Coordinate coords) {
         board.remove(coords);
 
     }
 
     /**
-     * Adds a battleship provided a location. Will override any other battleship if one already exists in that position.
+     * Adds a ship provided a location. Will override any other ship if one already exists in that position.
      *
-     * @param battleship the battleship to be added onto the board
+     * @param ship the ship to be added onto the board
      */
-    public void addBattleship(Battleship battleship) throws InvalidBattleshipPlacementException {
-        int x = battleship.getX();
-        int y = battleship.getY();
+    public void addShip(IShip ship) throws InvalidShipPlacementException {
+        int x = ship.getCoordinates().getX();
+        int y = ship.getCoordinates().getY();
         if (x >= dimension || x < 0 || y >= dimension || y < 0) {
-            throw new BattleshipOutOfBoundsExeception();
+            throw new ShipOutOfBoundsExeception();
         }
 
         Coordinate coords = new Coordinate(x, y);
 
-        // If the key exists, it means there is already a battleship in that position, we'll throw an error.
+        // If the key exists, it means there is already a ship in that position, we'll throw an error.
         if (board.containsKey(coords)) {
-            throw new BattleshipExistsInCoordsException();
+            throw new ShipExistsInCoordsException();
         }
 
-        if (!battleships.contains(battleship)) {
-            battleships.add(battleship);
+        if (!shipList.contains(ship)) {
+            shipList.add(ship);
         }
-        board.put(coords, battleship);
+        board.put(coords, ship);
 
     }
 
     /**
-     * Move a battleship at a given coordinate and series of movement operations. Will ignore any unknown commands.
+     * Move a ship at a given coordinate and series of movement operations. Will ignore any unknown commands.
      *
      * @param coords Coordinates
-     * @throws InvalidBattleshipPlacementException
+     * @throws InvalidShipPlacementException
      */
-    public void moveBattleship(Coordinate coords, String operations) throws InvalidBattleshipPlacementException {
-        Battleship battleship = getBattleship(coords);
+    public void moveShip(Coordinate coords, String operations) throws InvalidShipPlacementException {
+        IShip ship = getShip(coords);
 
-        if (battleship == null) {
+        if (ship == null) {
             return;
         }
 
-        Coordinate oldCoords = battleship.getCoordinates();
+        Coordinate oldCoords = ship.getCoordinates();
         int oldX = oldCoords.getX();
         int oldY = oldCoords.getY();
 
         for (int i = 0; i < operations.length(); i++) {
             char operation = operations.charAt(i);
             if (operation == 'M') {
-                battleship.move();
+                ship.move();
             } else {
                 Rotation rotation = Rotation.getRotation(operation);
 
                 if (rotation != null) {
-                    battleship.rotate(rotation);
+                    ship.rotate(rotation);
                 }
             }
 
         }
 
-        Coordinate newCoords = battleship.getCoordinates();
+        Coordinate newCoords = ship.getCoordinates();
 
-        if (getBattleship(newCoords) == null) {
-            removeBattleship(oldCoords);
-            addBattleship(battleship);
+        if (getShip(newCoords) == null) {
+            removeShip(oldCoords);
+            addShip(ship);
         } else {
-            battleship.setX(oldX);
-            battleship.setY(oldY);
+            ship.getCoordinates().setX(oldX);
+            ship.getCoordinates().setY(oldY);
         }
 
     }
@@ -149,11 +148,11 @@ public class Board {
      */
     public void shoot(Coordinate shootCoords) {
 
-        Battleship battleship = getBattleship(shootCoords);
+        IShip ship = getShip(shootCoords);
 
-        if (battleship != null) {
-            battleship.sink();
-            removeBattleship(shootCoords);
+        if (ship != null) {
+            ship.sink();
+            removeShip(shootCoords);
         }
 
 
@@ -162,8 +161,8 @@ public class Board {
 
     public String getTextOutput() {
         String output = "";
-        for (Battleship battleship : battleships) {
-            output += battleship + "\n";
+        for (IShip ship : shipList) {
+            output += ship + "\n";
         }
 
         return output.trim();

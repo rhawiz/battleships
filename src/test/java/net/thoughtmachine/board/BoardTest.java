@@ -1,11 +1,11 @@
 package net.thoughtmachine.board;
 
-import net.thoughtmachine.battleship.Battleship;
+import net.thoughtmachine.ship.Battleship;
 import net.thoughtmachine.datatype.Coordinate;
-import net.thoughtmachine.exception.BattleshipExistsInCoordsException;
-import net.thoughtmachine.exception.BattleshipOutOfBoundsExeception;
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
-import net.thoughtmachine.game.Game;
+import net.thoughtmachine.exception.ShipExistsInCoordsException;
+import net.thoughtmachine.exception.ShipOutOfBoundsExeception;
+import net.thoughtmachine.exception.InvalidShipPlacementException;
+import net.thoughtmachine.ship.IShip;
 import net.thoughtmachine.util.Consts;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 public class BoardTest {
 
     @Test
-    public void PopulateBoardTest() throws InvalidBattleshipPlacementException {
+    public void PopulateBoardTest() throws InvalidShipPlacementException {
         Board board = new Board(10);
 
-        List<Battleship> battleshipList = new ArrayList<Battleship>();
+        List<IShip> battleshipList = new ArrayList<IShip>();
         Battleship battleship1 = new Battleship(new Coordinate(1, 2), Consts.Orientation.NORTH);
         Battleship battleship2 = new Battleship(new Coordinate(2, 2), Consts.Orientation.EAST);
         Battleship battleship3 = new Battleship(new Coordinate(4, 2), Consts.Orientation.SOUTH);
@@ -41,54 +41,54 @@ public class BoardTest {
 
         board.populate(battleshipList);
 
-        assertEquals(battleship1, board.getBattleship(new Coordinate(1, 2)));
-        assertEquals(battleship2, board.getBattleship(new Coordinate(2, 2)));
-        assertEquals(battleship3, board.getBattleship(new Coordinate(4, 2)));
-        assertEquals(battleship4, board.getBattleship(new Coordinate(1, 5)));
-        assertEquals(battleship5, board.getBattleship(new Coordinate(9, 9)));
+        assertEquals(battleship1, board.getShip(new Coordinate(1, 2)));
+        assertEquals(battleship2, board.getShip(new Coordinate(2, 2)));
+        assertEquals(battleship3, board.getShip(new Coordinate(4, 2)));
+        assertEquals(battleship4, board.getShip(new Coordinate(1, 5)));
+        assertEquals(battleship5, board.getShip(new Coordinate(9, 9)));
 
     }
 
-    @Test(expected = BattleshipOutOfBoundsExeception.class)
-    public void BattleshipOutOfBoundsTest() throws InvalidBattleshipPlacementException {
+    @Test(expected = ShipOutOfBoundsExeception.class)
+    public void BattleshipOutOfBoundsTest() throws InvalidShipPlacementException {
         Board board = new Board(5);
         Battleship battleship1 = new Battleship(new Coordinate(5, 3), Consts.Orientation.NORTH);
         Battleship battleship2 = new Battleship(new Coordinate(1, 5), Consts.Orientation.NORTH);
-        board.addBattleship(battleship1);
-        board.addBattleship(battleship2);
+        board.addShip(battleship1);
+        board.addShip(battleship2);
     }
 
-    @Test(expected = BattleshipExistsInCoordsException.class)
-    public void BattleshipExistsInCoordsTest() throws InvalidBattleshipPlacementException {
+    @Test(expected = ShipExistsInCoordsException.class)
+    public void BattleshipExistsInCoordsTest() throws InvalidShipPlacementException {
         Board board = new Board(5);
         Battleship battleship1 = new Battleship(new Coordinate(3, 3), Consts.Orientation.NORTH);
         Battleship battleship2 = new Battleship(new Coordinate(3, 3), Consts.Orientation.NORTH);
-        board.addBattleship(battleship1);
-        board.addBattleship(battleship2);
+        board.addShip(battleship1);
+        board.addShip(battleship2);
     }
 
     @Test
-    public void ShootBattleshipTest() throws InvalidBattleshipPlacementException {
+    public void ShootBattleshipTest() throws InvalidShipPlacementException {
         Board board = new Board(5);
         Battleship battleship1 = new Battleship(new Coordinate(2, 3), Consts.Orientation.NORTH);
         Battleship battleship2 = new Battleship(new Coordinate(1, 3), Consts.Orientation.SOUTH);
-        board.addBattleship(battleship1);
-        board.addBattleship(battleship2);
+        board.addShip(battleship1);
+        board.addShip(battleship2);
         board.shoot(new Coordinate(2, 3));
 
-        assertNull(board.getBattleship(new Coordinate(2, 3)));
+        assertNull(board.getShip(new Coordinate(2, 3)));
         assertTrue(battleship1.isSunk());
     }
 
     @Test
-    public void MoveBattleshipTest() throws InvalidBattleshipPlacementException {
+    public void MoveBattleshipTest() throws InvalidShipPlacementException {
         Board board = new Board(10);
         Battleship battleship1 = new Battleship(new Coordinate(2, 2), Consts.Orientation.SOUTH);
         Battleship battleship2 = new Battleship(new Coordinate(3, 1), Consts.Orientation.NORTH);
-        board.addBattleship(battleship1);
-        board.addBattleship(battleship2);
-        board.moveBattleship(new Coordinate(2, 2), "MLMMRM");
-        board.moveBattleship(new Coordinate(3, 1), "MRMMRMMLM");
+        board.addShip(battleship1);
+        board.addShip(battleship2);
+        board.moveShip(new Coordinate(2, 2), "MLMMRM");
+        board.moveShip(new Coordinate(3, 1), "MRMMRMMLM");
 
 
         assertEquals(battleship1.getCoordinates(), new Coordinate(4, 0));
@@ -103,7 +103,7 @@ public class BoardTest {
         BoardTest test = new BoardTest();
         try {
             test.PopulateBoardTest();
-        } catch (InvalidBattleshipPlacementException e) {
+        } catch (InvalidShipPlacementException e) {
             e.printStackTrace();
         }
 

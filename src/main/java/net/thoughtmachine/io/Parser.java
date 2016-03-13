@@ -1,8 +1,8 @@
 package net.thoughtmachine.io;
 
-import net.thoughtmachine.battleship.Battleship;
+import net.thoughtmachine.ship.Battleship;
 import net.thoughtmachine.datatype.Coordinate;
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
+import net.thoughtmachine.ship.IShip;
 import net.thoughtmachine.util.Consts.Orientation;
 import net.thoughtmachine.util.Consts.Operation;
 
@@ -23,12 +23,12 @@ public class Parser {
 
     String filePath;
     int boardDimension;
-    ArrayList<Battleship> battleshipList;
+    ArrayList<IShip> shipList;
     ArrayList<String> operationsList;
 
     public Parser(String filePath) {
         this.filePath = filePath;
-        battleshipList = new ArrayList<Battleship>();
+        shipList = new ArrayList<IShip>();
         operationsList = new ArrayList<String>();
     }
 
@@ -43,7 +43,7 @@ public class Parser {
                 if (count == 0) {
                     boardDimension = Integer.parseInt(line);
                 } else if (count == 1) {
-                    battleshipList = parseBattleships(line);
+                    shipList = parseBattleShips(line);
                 } else {
                     operationsList.add(line);
                 }
@@ -56,8 +56,8 @@ public class Parser {
 
     }
 
-    private ArrayList<Battleship> parseBattleships(String line) {
-        ArrayList<Battleship> battleshipsList = new ArrayList<Battleship>();
+    private ArrayList<IShip> parseBattleShips(String line) {
+        ArrayList<IShip> battleshipsList = new ArrayList<IShip>();
         ArrayList<String> matches = getRegexMatches(line, "\\(([0-9]\\d*,\\s*[0-9]\\d*,\\s*[MLRNSWE])\\)");
 
         for (String shipInfoString : matches) {
@@ -68,8 +68,8 @@ public class Parser {
                 int y = Integer.parseInt(shipInfoList[1].trim());
                 Orientation orientation = Orientation.getOrientation(shipInfoList[2].trim().charAt(0));
                 Coordinate coords = new Coordinate(x, y);
-                Battleship battleship = new Battleship(coords, orientation);
-                battleshipsList.add(battleship);
+                IShip ship = new Battleship(coords, orientation);
+                battleshipsList.add(ship);
             }
         }
 
@@ -81,8 +81,8 @@ public class Parser {
         return boardDimension;
     }
 
-    public ArrayList<Battleship> getBattleshipList() {
-        return battleshipList;
+    public ArrayList<IShip> getShipList() {
+        return shipList;
     }
 
     public ArrayList<String> getOperationsList() {

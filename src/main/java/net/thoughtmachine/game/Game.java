@@ -2,7 +2,7 @@ package net.thoughtmachine.game;
 
 import net.thoughtmachine.board.Board;
 import net.thoughtmachine.datatype.Coordinate;
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
+import net.thoughtmachine.exception.InvalidShipPlacementException;
 import net.thoughtmachine.io.*;
 import net.thoughtmachine.io.FileWriter;
 import net.thoughtmachine.util.Consts.Operation;
@@ -19,29 +19,29 @@ public class Game {
     private String output;
     private Board board;
 
-    public Game(String inputFile, String output) throws InvalidBattleshipPlacementException {
+    public Game(String inputFile, String output) throws InvalidShipPlacementException {
         parser = new Parser(inputFile);
         parser.parse();
         this.output = output;
         board = new Board(parser.getBoardDimension());
-        board.populate(parser.getBattleshipList());
+        board.populate(parser.getShipList());
     }
 
 
     /**
      * Run the Game with the given text instructions and write the output to the provided location
      *
-     * @throws InvalidBattleshipPlacementException
+     * @throws InvalidShipPlacementException
      * @throws IOException
      */
-    public void run() throws InvalidBattleshipPlacementException {
+    public void run() throws InvalidShipPlacementException {
         ArrayList<String> operations = parser.getOperationsList();
         for (String operationLine : operations) {
             Operation operation = Parser.getOperation(operationLine);
             if (operation == Operation.MOVE) {
                 Coordinate moveCoords = Parser.parseMoveCoordinatesCommand(operationLine);
                 String moveOperations = Parser.parseMoveOperationsCommand(operationLine);
-                board.moveBattleship(moveCoords, moveOperations);
+                board.moveShip(moveCoords, moveOperations);
             } else if (operation == Operation.SHOOT) {
                 Coordinate shootCoords = Parser.parseShootCommand(operationLine);
                 board.shoot(shootCoords);

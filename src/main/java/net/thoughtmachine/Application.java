@@ -1,9 +1,6 @@
 package net.thoughtmachine;
 
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
 import net.thoughtmachine.game.Game;
-
-import java.io.*;
 
 public class Application {
 

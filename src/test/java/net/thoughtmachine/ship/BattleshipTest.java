@@ -1,19 +1,12 @@
-package net.thoughtmachine.battleship;
+package net.thoughtmachine.ship;
 
-import net.thoughtmachine.board.Board;
 import net.thoughtmachine.datatype.Coordinate;
-import net.thoughtmachine.exception.BattleshipExistsInCoordsException;
-import net.thoughtmachine.exception.BattleshipOutOfBoundsExeception;
-import net.thoughtmachine.exception.InvalidBattleshipPlacementException;
 import net.thoughtmachine.util.Consts;
 import net.thoughtmachine.util.Consts.Rotation;
 import net.thoughtmachine.util.Consts.Orientation;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
+
 
 /**
  * Battleship Test
