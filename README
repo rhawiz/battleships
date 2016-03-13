@@ -1,0 +1,31 @@
+THOUGHT MACHINE BATTLESHIP PROGRAMMING TEST
+
+-------------------------------------------
+RUNNING THE PROGRAM
+-------------------------------------------
+
+Either download the directory or pull using git.
+Using command line change to the root directory
+    e.g. on windows `cd C:\battleships\`  if project was extracted/pulled to root directory
+
+TO BUILD
+-------------------------------------------
+run command: C:\battleships> gradle build
+
+TO TEST
+-------------------------------------------
+run command C:\battleships> gradle test
+    This will use the test files in the directory src\main\resources\tests\ to run the tests
+    and compare it with its associated expected output
+
+TO RUN
+-------------------------------------------
+run command: C:\battleships> gradle run
+    This will run the commands in src\main\resources\input.txt and output the results into src\main\resources\output.txt
+
+
+-------------------------------------------
+NOTES
+-------------------------------------------
+
+1. Only basic validation has been implemented as there was no specification to thoroughly check user input
