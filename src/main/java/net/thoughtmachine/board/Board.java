@@ -38,7 +38,7 @@ public class Board {
     /**
      * Populate the board with an arraylist of shipList.
      *
-     * @param shipList
+     * @param shipList The list of ships
      * @throws InvalidShipPlacementException
      */
     public void populate(List<IShip> shipList) throws InvalidShipPlacementException {
@@ -160,9 +160,10 @@ public class Board {
 
 
     public String getTextOutput() {
+        String lineSeperator = System.getProperty("line.separator");
         String output = "";
         for (IShip ship : shipList) {
-            output += ship + "\n";
+            output += ship + lineSeperator;
         }
 
         return output.trim();
