@@ -24,6 +24,8 @@ public class GameTest {
         FileReader fileReader = new FileReader(expectedOutputFile);
         String expectedOutputText = fileReader.read().trim();
         String actualOutputText = game.getGameResults().trim();
+        actualOutputText = actualOutputText.replaceAll("\\r?\\n","").trim();
+        expectedOutputText = expectedOutputText.replaceAll("\\r?\\n","").trim();
 
         assertEquals(actualOutputText, expectedOutputText);
 
@@ -41,8 +43,23 @@ public class GameTest {
         FileReader fileReader = new FileReader(expectedOutputFile);
         String expectedOutputText = fileReader.read().trim();
         String actualOutputText = game.getGameResults().trim();
+        actualOutputText = actualOutputText.replaceAll("\\r?\\n","").trim();
+        expectedOutputText = expectedOutputText.replaceAll("\\r?\\n","").trim();
 
         assertEquals(actualOutputText, expectedOutputText);
+
+    }
+
+
+
+    public static void main(String... args) {
+        GameTest test = new GameTest();
+
+        try {
+            test.TestGame2();
+        } catch (InvalidShipPlacementException e) {
+            e.printStackTrace();
+        }
 
     }
 
